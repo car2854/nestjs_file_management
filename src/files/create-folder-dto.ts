@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateFolderDto{
+export class CreateFolderDto {
   @IsString()
   readonly folderName: string;
 }

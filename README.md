@@ -5,34 +5,35 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Servidor administrador de archivos
 
-## Description
+## Descripción
+Este es un servidor para la aplicacion de administracion de archivos, este servidor se encarga de subir imagenes al servidor Google Cloud Storage.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+# Instalacion
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Explicación Detallada
+Para correr el servidor correctamente necesita dos archivos, 
+1. .env 
+2. collection-map-414120-e036c2f5aee7.json 
+
+Esto para evitar subir los archivos a Git, lo pasare por mensaje para que puedan moverlo y colocarlo en la raiz de la aplicacionn es decir como este ejemplo
+
+- `dist/`
+- `node_modules/`
+- `src/`
+- `...otras carpetas y archivos aquí...`
+- `collection-map-414120-e036c2f5aee7.json` *(aqui debe estar este archivo)*
+- `.env` *(aqui debe estar este archivo)*
+- `package-lock.json`
+- `package.json`
+- `...otros archivos relacionados con el proyecto...`
+
+# Correr la aplicacion
 
 ```bash
 # development
@@ -45,36 +46,80 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+# API Endpoints
 
-```bash
-# unit tests
-$ npm run test
+## GET /api/files
+### Descripción
+Este endpoint que permite recuperar los archivos del servidor.
 
-# e2e tests
-$ npm run test:e2e
+### URL
+`/api/files`
 
-# test coverage
-$ npm run test:cov
-```
+### Método HTTP
+`GET`
 
-## Support
+### Datos opcional Query
+- `folderName`: Si quiere obtener los archivos de una carpeta en especifico, enviar en el query este dato `String`.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## POST /api/files
+### Descripción
+Este endpoint permite subir un archivo al servidor.
 
-## Stay in touch
+### URL
+`/api/files`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Método HTTP
+`POST`
 
-## License
+### Datos de Entrada
+- `image`: Archivo que se va a subir. Se envía como `multipart/form-data`.
 
-Nest is [MIT licensed](LICENSE).
+### Datos opcional Query
+- `folderName`: Si quieres subir la imagen en una carpeta en especifico, enviar en el query el nombre de la carpeta `String`.
 
-multer: Para los archivos
+## POST /api/files/folders
+### Descripción
+Este endpoint permite crear carpetas en el servidor
 
-npm install @nestjs/platform-express: Buscar mas infor en internet
-npm install @nestjs/config Para configurar en nestjs
+### URL
+`/api/files/folders`
 
-npm install class-validator class-transformer
+### Método HTTP
+`POST`
+
+### Datos de Entrada en el body
+- `folderName`: Nombre de la carpeta que se va a crear. Se envía como `String`.
+
+### Datos opcional Query
+- `folderName`: Si quieres crear la carpeta en una carpeta en especifico, enviar en el query el nombre de la carpeta `String`.
+
+## DELETE /api/files/:fileName
+### Descripción
+Este endpoint permite eliminar una carpeta o archivo, cuando se elimina una carpeta elimina todo lo que esta dentro de la carpeta
+
+### URL
+`/api/files/:fileName`
+
+### Método HTTP
+`DELETE`
+
+### Datos de Entrada en el paramentro
+- `fileName`: Nombre de la carpeta o archivo ha eliminar `String`.
+
+
+# librerias instaladas
+
+## 1. multer
+Para manejar la subida de archivos en aplicaciones web
+
+## 2. @nestjs/platform-express: 
+Proporciona integración con Express, permite que las aplicaciones de NestJS utilicen el middleware y las funcionalidades de Express
+
+## 3. @nestjs/config 
+Facilita la gestión de la configuración en aplicaciones NestJS
+
+## 4. class-validator
+Permite definir y ejecutar validaciones basadas en decoradores para objetos y clases
+
+## 5. class-transformer
+Permite transformar objetos de forma sencilla
