@@ -20,7 +20,19 @@ export class FilesService {
       __dirname,
       '../../collection-map-414120-e036c2f5aee7.json',
     );
-    this.storage = new Storage({ keyFilename });
+    // this.storage = new Storage({ keyFilename });
+
+    const projectId = process.env.PROJECT_ID;
+    const clientEmail = process.env.CLIENT_EMAIL;
+    const privateKey = process.env.PRIVATE_KEY;
+    
+    this.storage = new Storage({ 
+      projectId: projectId,
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
+    });
     this.bucket = this.storage.bucket(this.bucketName);
   }
 
