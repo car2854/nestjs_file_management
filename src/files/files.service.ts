@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Bucket, Storage } from '@google-cloud/storage';
-import * as path from 'path';
+// import * as path from 'path';
 
 import {
   getFileFormatHelper,
@@ -16,17 +16,17 @@ export class FilesService {
   private readonly bucket: Bucket;
 
   constructor() {
-    const keyFilename = path.join(
-      __dirname,
-      '../../collection-map-414120-e036c2f5aee7.json',
-    );
+    // const keyFilename = path.join(
+    //   __dirname,
+    //   '../../collection-map-414120-e036c2f5aee7.json',
+    // );
     // this.storage = new Storage({ keyFilename });
 
     const projectId = process.env.PROJECT_ID;
     const clientEmail = process.env.CLIENT_EMAIL;
     const privateKey = process.env.PRIVATE_KEY;
-    
-    this.storage = new Storage({ 
+
+    this.storage = new Storage({
       projectId: projectId,
       credentials: {
         client_email: clientEmail,
