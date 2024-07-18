@@ -24,7 +24,7 @@ export class FilesService {
 
     const projectId = process.env.PROJECT_ID;
     const clientEmail = process.env.CLIENT_EMAIL;
-    const privateKey = process.env.PRIVATE_KEY;
+    // const privateKey = process.env.PRIVATE_KEY;
 
     this.storage = new Storage({
       projectId: projectId,
@@ -58,6 +58,7 @@ export class FilesService {
     if (folderName !== '' && !folderName.endsWith('/')) {
       folderName += '/';
     }
+    // Generar una UUID
     const uuid = this.generateUUID();
     const file = bucket.file(folderName + `${uuid}${extension}`);
     await file.save(fileData, {
@@ -67,6 +68,7 @@ export class FilesService {
     const name = getNameHelper(file.name, folderName);
     const format = getFileFormatHelper(file.name);
     const fileName = file.name;
+    // Obtener una URL compartida, ya que los archivos se suben en privado
     const publicUrl = await getPublicUrlHelper(file.name, this.bucket);
     return {
       fileName,
@@ -115,6 +117,7 @@ export class FilesService {
       const name = getNameHelper(file.name, folderName);
       if ([0, 1].includes(name.replace(folderName, '').split('/').length)) {
         const publicUrl = await getPublicUrlHelper(file.name, this.bucket);
+        // Dar un formato a los archivos, el back es cuando no tiene ningun formato y solo es el archivo si mismo, usarlo para volver atras
         const format =
           name === 'atras..' ? 'back' : getFileFormatHelper(file.name);
         filesList.push({

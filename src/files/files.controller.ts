@@ -19,6 +19,7 @@ import { CreateFolderDto } from './create-folder-dto';
 @Controller('files')
 export class FilesController {
   constructor(private readonly fileService: FilesService) {}
+  // Obtener los archivos
   @Get()
   async getAllFiles(
     @Query('folderName') folderName: string,
@@ -27,6 +28,7 @@ export class FilesController {
   > {
     return this.fileService.listFiles(folderName);
   }
+  // Subir los archivos
   @Post()
   @UseInterceptors(FilesInterceptor('image'))
   async uploadFiles(
@@ -48,6 +50,7 @@ export class FilesController {
     console.log(data);
     return data;
   }
+  // Crear carpetas
   @Post('/folders')
   async createFolder(
     @Body(ValidationPipe) createFolderDto: CreateFolderDto,
@@ -64,6 +67,7 @@ export class FilesController {
         .json({ message: `Error al crear la carpeta: ${error.message}` });
     }
   }
+  // Eliminar un archivo o carpeta
   @Delete(':fileName')
   async deleteFile(@Param('fileName') fileName: string, @Res() res: Response) {
     try {
